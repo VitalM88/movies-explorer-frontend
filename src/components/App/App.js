@@ -1,5 +1,5 @@
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Main from '../Main/Main';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
@@ -10,31 +10,21 @@ import Profile from '../Profile/Profile';
 function App() {
   return (
     <div className="App">
-
-      <Route exact path="/">
-        <Main/>
-      </Route>
-
-      <Route exact path="/movies">
-        <Movies/>
-      </Route>
-
-      <Route exact path="/saved-movies">
-        <SavedMovies/>
-      </Route>
-
-      <Route exact path="/profile">
-        <Profile/>
-      </Route>
-
-      <Route path="/signup">
-        <Register/>
-      </Route>
+      <Routes>
         
-      <Route path="/signin">
-        <Login/>
-      </Route>
+        <Route exact path="/" element={<Main />} />
+       
+        <Route exact path="/movies" element={<Movies />} />
 
+        <Route exact path="/saved-movies" element={<SavedMovies />}/>
+
+        <Route exact path="/profile" element={<Profile />}/>
+
+        <Route path="/signup" element={<Register />}/>
+        
+        <Route path="/signin" element={<Login />}/>
+
+      </Routes>
     </div>
   );
 }
