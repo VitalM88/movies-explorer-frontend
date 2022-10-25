@@ -1,11 +1,11 @@
 import './Portfolio.css';
 
 function Portfolio() {
-    return (
-      <section className="portfolio">
+  return (
+    <section className="portfolio">
 
-      </section>
-    );
-  };
+    </section>
+  );
+}
   
-  export default Portfolio;
+export default Portfolio;

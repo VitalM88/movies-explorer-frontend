@@ -1,11 +1,11 @@
 import './NavTab.css';
 
 function NavTab() {
-    return (
-      <div className="nav-tab">
+  return (
+    <div className="nav-tab">
 
-      </div>
-    );
-  };
+    </div>
+  );
+}
   
-  export default NavTab;
+export default NavTab;

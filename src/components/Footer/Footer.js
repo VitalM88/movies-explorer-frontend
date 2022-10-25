@@ -1,11 +1,11 @@
 import './Footer.css';
 
 function Footer() {
-    return (
-      <footer className="footer">
+  return (
+    <footer className="footer">
 
-      </footer>
-    );
-  };
+    </footer>
+  );
+}
   
-  export default Footer;
+export default Footer;

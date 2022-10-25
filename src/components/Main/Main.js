@@ -1,6 +1,7 @@
 import './Main.css';
 import Header from '../Header/Header';
 import Promo from '../Promo/Promo';
+import NavTab from '../NavTab/NavTab';
 import AboutProject from '../AboutProject/AboutProject';
 import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
@@ -13,6 +14,7 @@ function Main() {
     <div className="main">
       <Header state="header_main" />
       <Promo />
+      <NavTab />
       <AboutProject />
       <Techs />
       <AboutMe />
@@ -20,6 +22,6 @@ function Main() {
       <Footer />
     </div>
   );
-};
+}
 
 export default Main;

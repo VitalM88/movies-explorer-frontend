@@ -1,11 +1,11 @@
 import './AboutMe.css';
 
 function AboutMe() {
-    return (
-      <section className="about-me">
+  return (
+    <section className="about-me" id="about-me">
 
-      </section>
-    );
-  };
+    </section>
+  );
+}
   
-  export default AboutMe;
+export default AboutMe;

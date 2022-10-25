@@ -1,11 +1,11 @@
 import './MoviesCard.css';
 
 function MoviesCard() {
-    return (
-      <section className="card">
+  return (
+    <section className="card">
 
-      </section>
-    );
-  };
+    </section>
+  );
+}
   
-  export default MoviesCard;
+export default MoviesCard;

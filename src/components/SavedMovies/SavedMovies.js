@@ -1,11 +1,11 @@
 import './SavedMovies.css';
 
 function SavedMovies() {
-    return (
-      <div className="saved-movies">
+  return (
+    <div className="saved-movies">
 
-      </div>
-    );
-  };
+    </div>
+  );
+}
   
-  export default SavedMovies;
+export default SavedMovies;

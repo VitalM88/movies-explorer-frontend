@@ -1,11 +1,11 @@
 import './AboutProject.css';
 
 function AboutProject() {
-    return (
-      <section className="about-project">
+  return (
+    <section className="about-project" id="about-project">
 
-      </section>
-    );
-  };
+    </section>
+  );
+}
   
-  export default AboutProject;
+export default AboutProject;

@@ -1,11 +1,11 @@
 import './SearchForm.css';
 
 function SearchForm() {
-    return (
-      <form className="register">
+  return (
+    <form className="register">
 
-      </form>
-    );
-  };
+    </form>
+  );
+}
   
-  export default SearchForm;
+export default SearchForm;
