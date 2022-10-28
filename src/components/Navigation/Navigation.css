@@ -60,3 +60,23 @@
     width: 9px;
     height: 12px;
 }
+
+@media screen and (max-width: 800px) {
+
+
+  
+  }
+  
+  @media screen and (max-width: 414px) {
+
+    .navigation_main {
+        column-gap: 14px;
+        font-size: 10px;
+    }
+  
+    .navigation__button {
+        width: 54px;
+        height: 26px;
+    }
+    
+  }

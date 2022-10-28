@@ -23,3 +23,19 @@
   opacity: .5;
   cursor: pointer;
 }
+
+@media screen and (max-width: 800px) {
+
+  .header {
+    padding: 18px 30px;
+  }
+
+}
+
+@media screen and (max-width: 414px) {
+
+  .header {
+    padding: 18px 14px;
+  }
+  
+}
