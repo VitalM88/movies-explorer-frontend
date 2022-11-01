@@ -1,0 +1,57 @@
+.not-found {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.not-found__title {
+    font-weight: 400;
+    font-size: 140px;
+    line-height: 1.21;
+    margin: 246px 0 5px 0;
+}
+
+.not-found__text {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.19;
+    margin: 0 0 184px 0;
+}
+
+.not-found__button {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.21;
+    color: #4285F4;
+    border: none;
+    background: none;
+    transition: opacity .1s linear;
+}
+
+.not-found__button:hover {
+    opacity: .5;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+
+    .not-found__title {
+        margin: 408px 0 5px 0;
+    }
+
+}
+
+@media screen and (max-width: 414px) {
+
+    .not-found__title {
+        margin: 329px 0 5px 0;
+        font-size: 80px;
+    }
+
+    .not-found__text {
+        font-size: 12px;
+        margin: 0 0 284px 0;
+    }
+}
