@@ -1,10 +1,16 @@
 import './SavedMovies.css';
+import Header from '../Header/Header';
+import SearchForm from '../SearchForm/SearchForm';
+import Footer from '../Footer/Footer';
 
 function SavedMovies() {
   return (
-    <div className="saved-movies">
+    <section className="saved-movies">
+      <Header state="header_nav" />
+      <SearchForm />
 
-    </div>
+      <Footer />
+    </section>
   );
 }
   
