@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import './SearchForm.css';
 
 function SearchForm() {
@@ -6,10 +7,13 @@ function SearchForm() {
       <div className="search-form__container">
         <div className="search-form__input-container">
           <input className="search-form__input" placeholder="Фильм" />
-          <button className="search-form__button">Найти</button>
+          <button className="search-form__button"></button>
         </div>
         <div className="search-form__checkbox-container">
-          <input className="search-form__checkbox" type="checkbox" />
+          <label className="search-form__checkbox-label">
+            <input className="search-form__checkbox" type="checkbox" />
+            <span className="search__slider" />
+          </label>
           <p className="search-form__checkbox-text">Короткометражки</p>
         </div>
       </div>

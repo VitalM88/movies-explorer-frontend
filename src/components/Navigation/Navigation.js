@@ -53,7 +53,7 @@ function Navigation({ state }) {
                   <button 
                     type='button' 
                     onClick={handleClick} 
-                    className={`navigation__toogle-btn navigation__toogle-btn_state_${navBarState}`}
+                    className="navigation__toogle-btn"
                   >           
                   </button>
                 ) : ''
