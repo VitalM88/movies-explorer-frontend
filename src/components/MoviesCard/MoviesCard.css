@@ -1,3 +1,57 @@
-.card {
-    
+.movie {
+
+    background: #222222;
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
 }
+
+.movie__image {
+    width: 100%;
+    height: calc(width * 0.5593)
+}
+
+.movie__description {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 12px;
+}
+
+.movie__text-container {
+    color: #FFFFFF;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie__title {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.23;
+    margin: 0 0 10px 0;
+    
+
+}
+
+.movie__duration {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 1.18;
+    color: #8B8B8B;
+}
+
+.movie__save-button {
+    width: 16px;
+    height: 16px;
+    margin: 0 0 0 10px;
+    border-radius: 16px;
+    background: #313131;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.09);
+    border: solid 2px #FFFFFF;
+}
+
+.movie__save-button_is-saved {
+    background: #2BE080;
+}
+
+

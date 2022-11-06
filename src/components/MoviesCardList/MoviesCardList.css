@@ -1,3 +1,56 @@
 .cards {
+    padding: 70px 70px 30px 70px;
+    margin: 0 auto;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 32px 20px;
+}
+
+.cards__button {
+    margin: 50px auto 80px;
+    background: #2F2F2F;
+    border: none;
+    border-radius: 6px;
+    height: 36px;
+    width: 320px;
+    color: #FFFFFF;
+    transition: opacity .1s linear;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.25;
+}
+
+.cards__button:hover {
+    opacity: .5;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 800px) {
+
+    .cards {
+        padding: 70px 30px 30px 30px;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 36px 30px;
+    }
     
+}
+
+@media screen and (max-width: 414px) {
+
+    .cards {
+        padding: 40px 10px 30px 10px;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 20px 30px;
+    }
+
+    .cards__button {
+        width: 240px;
+    }
+
 }
