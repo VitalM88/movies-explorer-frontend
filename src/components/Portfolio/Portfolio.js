@@ -7,17 +7,17 @@ function Portfolio() {
 
       <ul className="portfolio__list">
         <li className="portfolio__list-item">
-          <a className="portfolio__link" href="https://github.com/VitalM88/how-to-learn">
+          <a className="portfolio__link" target="_blank" href="https://github.com/VitalM88/how-to-learn">
             Статичный сайт <span className="span">↗</span>
           </a>
         </li>
         <li className="portfolio__list-item">
-          <a className="portfolio__link" href="https://github.com/VitalM88/russian-travel">
+          <a className="portfolio__link" target="_blank" href="https://github.com/VitalM88/russian-travel">
             Адаптивный сайт <span className="span">↗</span>
           </a>
         </li>
         <li className="portfolio__list-item">
-          <a className="portfolio__link" href="https://mesto.vitalm.nomoredomains.icu">
+          <a className="portfolio__link" target="_blank" href="https://mesto.vitalm.nomoredomains.icu">
             Одностраничное приложение <span className="span">↗</span>
           </a>
         </li>

@@ -1,12 +1,12 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList() {
+function MoviesCardList({ onSavedMovies }) {
 
   const movies = [];
 
   for (let i=0; i<16; i++) {
-    movies.push(MoviesCard());
+    movies.push(MoviesCard({onSavedMovies}));
   }
 
   return (
@@ -14,7 +14,7 @@ function MoviesCardList() {
       <li className="cards">
         {movies}
       </li>
-      <button className="cards__button">Еще</button>
+      <button type="button" className="cards__button">Еще</button>
     </>
   );
 }

@@ -3,12 +3,13 @@
     background: #222222;
     box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
-    overflow: hidden;
+/*    overflow: hidden; */
 }
 
 .movie__image {
     width: 100%;
-    height: calc(width * 0.5593)
+    height: calc(width * 0.5593);
+    border-radius: 10px 10px 0 0;
 }
 
 .movie__description {
@@ -19,9 +20,9 @@
 
 .movie__text-container {
     color: #FFFFFF;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
+ /*    white-space: nowrap; 
+    overflow: hidden;  
+    text-overflow: ellipsis; */
 }
 
 .movie__title {
@@ -48,10 +49,24 @@
     background: #313131;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.09);
     border: solid 2px #FFFFFF;
+    transition: opacity .1s linear;
 }
+
+.movie__save-button:hover {
+    opacity: .5;
+    cursor: pointer;
+}
+
 
 .movie__save-button_is-saved {
     background: #2BE080;
 }
 
+.movie__save-button_saved-movies {
+    background: none;
+    border: none;
+    background-image: url('../../images/remove-icon.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+}
 

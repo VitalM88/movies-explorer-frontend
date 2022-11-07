@@ -37,10 +37,12 @@
     line-height: 20px;
     margin: 0 10px 0 0;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .search-form__input:focus {
     outline: none;
+    border-bottom: solid #424242 1px ;
 }
 
 .search-form__button {
