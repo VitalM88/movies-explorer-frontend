@@ -1,0 +1,41 @@
+.header {
+  background: #202020;
+  width: 100%;
+  max-width: 1440px;
+  padding: 18px 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.header_main {
+  background: #073042;
+}
+
+.header__logo {
+  height: 38px;
+  width: 38px;
+  transition: opacity .1s linear;
+}
+
+.header__logo:hover {
+  opacity: .5;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+
+  .header {
+    padding: 18px 30px;
+  }
+
+}
+
+@media screen and (max-width: 414px) {
+
+  .header {
+    padding: 18px 14px;
+  }
+  
+}

@@ -1,0 +1,1 @@
+# Frontend сервиса movies-explorer.
