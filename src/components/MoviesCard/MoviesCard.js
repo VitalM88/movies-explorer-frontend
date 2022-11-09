@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './MoviesCard.css';
+import { apiSettings } from "../../utils/utils";
 
-function MoviesCard({ onSavedMovies }) {
+function MoviesCard({ onSavedMovies, movie }) {
   const [btnState, toogleBtnState] = useState('false');
 
   const handleClick = () => {
@@ -12,11 +13,19 @@ function MoviesCard({ onSavedMovies }) {
 
   return (
     <li className="movie">
-      <img className="movie__image" src="https://avatars.dzeninfra.ru/get-zen_doc/1594475/pub_606ea4d89d33fa0e1c702d05_606ea5eaf3166604d1af7ea0/scale_1200" alt="Видео" />
+      <a className="movie__image-container" href={movie.trailerLink} target="_blank">
+        <img 
+          className="movie__image" 
+          src={`${apiSettings.moviesUrl}${movie.image.url}`} 
+          alt="Видео" 
+        />
+      </a>
       <div className="movie__description">
         <div className="movie__text-container">
-          <p className="movie__title">33 слова о дизайне</p>
-          <span className="movie__duration">1ч42м</span>
+          <p className="movie__title">{`${movie.nameRU}`}</p>
+          <span className="movie__duration">
+            {`${Math.floor(movie.duration/60)}ч${movie.duration%60}м`}
+          </span>
         </div>
         <button 
           type="button" 

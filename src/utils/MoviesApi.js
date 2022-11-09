@@ -11,12 +11,12 @@ class MoviesApi {
     return Promise.reject(`Ошибка: ${res.status}`)
   }
 
-  getMovies(token) {
+  getMovies() {
     return fetch(`${this._moviesUrl}/beatfilm-movies`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        
       },
     })
       .then(this._checkResponse);

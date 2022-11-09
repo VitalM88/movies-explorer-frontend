@@ -21,8 +21,16 @@
     background-position: 19px;
     background-color: #222222;
     border-radius: 9px;
-    padding: 19px 19px 19px 63px;
+    padding: 19px 19px 1px 63px;
     box-sizing: border-box;
+    flex: 1;
+}
+
+.search-form__input-item {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 10px 0 0;
     flex: 1;
 }
 
@@ -35,7 +43,7 @@
     font-weight: 400;
     font-size: 18px;
     line-height: 20px;
-    margin: 0 10px 0 0;
+    margin: 0;
     width: 100%;
     box-sizing: border-box;
 }
@@ -45,10 +53,24 @@
     border-bottom: solid #424242 1px ;
 }
 
+.search-form__input-error {
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 1.2;
+    color: #EE3465;
+    margin: 6px 0 0 0;
+    opacity: 0;
+}
+
+.search-form__input-error_active {
+    opacity: 1;
+}
+
 .search-form__button {
     background: none;
     width: 80px;
-    padding: 0;
+    padding: 0px;
+    margin: 0 0 19px 0;
     border: none;
     border-radius: 48px;
     background-image: url(../../images/search-icon.svg);
