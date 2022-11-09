@@ -1,7 +1,7 @@
 import './SearchForm.css';
 import { useState } from 'react';
 
-function SearchForm({ getMovies }) {
+function SearchForm({ getSearchMovies }) {
   
   //  const [isValid, setIsValid] = useState(false);
   const [errorState, setErrorState] = useState("");
@@ -20,7 +20,7 @@ function SearchForm({ getMovies }) {
 
   function handleGetMovies(e) {
     e.preventDefault();
-    getMovies(inputValue);
+    getSearchMovies(inputValue);
   } 
 
   return (

@@ -1,5 +1,5 @@
 import './Movies.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
@@ -9,55 +9,60 @@ import moviesApi from '../../utils/MoviesApi';
 
 function Movies() {
 
-  //const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
   const [counter, setCounter] = useState(1);
-  //const [quantityMovies, setQuantity] = useState(16);
   const [moviesForRender, setMoviesForRender] = useState([]);
-  //const [moreButtonHidden, setMoreButtonHidden] = useState(false);
+  const [moreButtonHidden, setMoreButtonHidden] = useState(false);
+  const [foundMovies, setFoundMovies] = useState([]);
 
-  let movies;
- 
-  function getMovies() {
+  useEffect(() => {
     moviesApi.getMovies()
       .then((data) => {
-        movies = JSON.parse(JSON.stringify(data));
+        localStorage.setItem("movies", JSON.stringify(data));
+        setMovies(JSON.parse(localStorage.getItem("movies")));
         console.log(movies);
-        countMovies(counter, movies);
-        
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
-    
-  }
+  }, []);
 
-  function countMovies(counter, movies) {
-    
+  function countMovies() {
     let quantityMovies = 16;
     (window.innerWidth > 800) ? (quantityMovies = 16*counter) : ((window.innerWidth > 414) ? (quantityMovies = 8*counter) : (quantityMovies = 5*counter));
-    setMoviesForRender(movies.slice(0,quantityMovies));
-    //  (moviesForRender.length >= movies.length) ? setMoreButtonHidden(true) : setMoreButtonHidden(false);
-    console.log(counter);
+    setMoviesForRender(foundMovies.slice(0,quantityMovies));
   }
 
+  useEffect(() => {
+    countMovies()
+  }, [counter, foundMovies]);
+
+  useEffect(() => {
+    ((moviesForRender.length === foundMovies.length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false);
+  }, [moviesForRender]);
+
   function moreMovies() {
-    setCounter(counter => counter + 1)
-    //countMovies(counter, movies);
+    setCounter(counter => counter + 1);
     console.log(movies);
   }
 
+  function getSearchMovies(inputValue) {
+    console.log(inputValue);
+    setFoundMovies(movies.filter(movie => movie.nameRU.toLowerCase().includes(inputValue.toLowerCase())));
+    setCounter(1);
+  }
  
   return (
     <section className="movies">
       <Header state="header_nav" />
       <SearchForm 
-        getMovies={getMovies}
+        getSearchMovies={getSearchMovies}
       />
       <MoviesCardList 
         onSavedMovies={false}
         moviesForRender={moviesForRender}
         moreMovies={moreMovies}
-        moreButtonHidden={false}
+        moreButtonHidden={moreButtonHidden}
       />
       
       <Footer />
