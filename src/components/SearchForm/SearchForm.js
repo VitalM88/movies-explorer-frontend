@@ -1,14 +1,15 @@
 import './SearchForm.css';
 import { useState } from 'react';
 
-function SearchForm({ getSearchMovies }) {
+function SearchForm({ getSearchMovies, checkboxState, toogleCheckboxState }) {
   
   //  const [isValid, setIsValid] = useState(false);
   const [errorState, setErrorState] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [searchInputValue, setSearchInputValue] = useState(JSON.parse(localStorage.getItem("searchInputValue")) || "");
+  
 
   function handleChangeInput(e) {
-    setInputValue(e.target.value);
+    setSearchInputValue(e.target.value);
     !e.target.value ? (
     //    setIsValid(false),
       setErrorState("active")
@@ -20,8 +21,14 @@ function SearchForm({ getSearchMovies }) {
 
   function handleGetMovies(e) {
     e.preventDefault();
-    getSearchMovies(inputValue);
+    getSearchMovies(searchInputValue);
+    localStorage.setItem("searchInputValue", JSON.stringify(searchInputValue));
   } 
+  
+  function handleToogleCheckboxState(e) {
+    e.preventDefault();
+    toogleCheckboxState();
+  }
 
   return (
     <form 
@@ -36,7 +43,7 @@ function SearchForm({ getSearchMovies }) {
               className="search-form__input" 
               placeholder="Фильм" 
               onChange={handleChangeInput}
-              value={inputValue || ''}
+              value={searchInputValue || ''}
               required 
             />
             <span className={`search-form__input-error search-form__input-error_${errorState}`}>
@@ -48,7 +55,12 @@ function SearchForm({ getSearchMovies }) {
         
         <div className="search-form__checkbox-container">
           <label className="search-form__checkbox-label">
-            <input className="search-form__checkbox" type="checkbox" />
+            <input 
+              className="search-form__checkbox" 
+              type="checkbox" 
+              checked={checkboxState} 
+              onChange={handleToogleCheckboxState}
+            />
             <span className="search__slider" />
           </label>
           <p className="search-form__checkbox-text">Короткометражки</p>

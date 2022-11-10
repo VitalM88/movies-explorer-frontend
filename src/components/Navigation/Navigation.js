@@ -6,10 +6,10 @@ import profileIcon from '../../images/profile-icon.svg';
 function Navigation({ state }) {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [btnState, toogleBtnState] = useState('false');
+  const [btnState, setBtnState] = useState('false');
 
   const handleClick = () => {
-    toogleBtnState(s => !s);
+    setBtnState(s => !s);
   };
 
   const navBarState = (btnState ? "noactive" : "active");

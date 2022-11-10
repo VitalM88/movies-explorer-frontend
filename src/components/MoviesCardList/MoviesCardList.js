@@ -1,7 +1,7 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ moviesForRender, onSavedMovies, moreMovies, moreButtonHidden }) {
+function MoviesCardList({ moviesForRender, onSavedMovies, getMoreMovies, moreButtonHidden }) {
 
   return (
     <>
@@ -21,7 +21,7 @@ function MoviesCardList({ moviesForRender, onSavedMovies, moreMovies, moreButton
         <button 
           type="button" 
           className="cards__button"
-          onClick={moreMovies}  
+          onClick={getMoreMovies}  
         >Еще</button>
       }
     </>
