@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './MoviesCard.css';
-import { apiSettings } from "../../utils/utils";
+import { apiSettings } from "../../utils/constans";
 
 function MoviesCard({ onSavedMovies, movie }) {
   const [btnState, toogleBtnState] = useState('false');

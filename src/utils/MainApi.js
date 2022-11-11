@@ -1,4 +1,4 @@
-import { apiSettings } from "./utils.js";
+import { apiSettings } from "./constans.js";
 
 class MainApi {
   constructor(options) {

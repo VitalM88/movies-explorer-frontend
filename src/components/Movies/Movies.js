@@ -4,6 +4,12 @@ import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import InfoTip from '../InfoTip/InfoTip';
+import {
+  quantityMoviesL,
+  quantityMoviesM,
+  quantityMoviesS,
+} from '../../utils/constans.js'
 
 import moviesApi from '../../utils/MoviesApi';
 
@@ -15,16 +21,26 @@ function Movies() {
   const [moreButtonHidden, setMoreButtonHidden] = useState(false);
   const [foundMovies, setFoundMovies] = useState(JSON.parse(localStorage.getItem("foundMovies")) || []);
   const [checkboxState, setcheckboxState] = useState(JSON.parse(localStorage.getItem("checkbox")) || false);
-  
+  const [notFound , setNotFound] = useState(false);
+  const [isLoading , setIsLoading] = useState(false);
+  const [isError , setIsError] = useState(false);
+
+ 
   useEffect(() => {
     moviesApi.getMovies()
       .then((data) => {
         localStorage.setItem("movies", JSON.stringify(data));
         setMovies(JSON.parse(localStorage.getItem("movies")));
-        
+        setIsLoading(true);
       })
-      .then(renderMovies())
+      .then(() => {
+        setIsLoading(false);
+      })
+      .then(() => {
+        renderMovies();
+      })
       .catch((err) => {
+        setIsError(true);
         console.log(`Ошибка: ${err}`);
       });
   }, []);
@@ -36,6 +52,8 @@ function Movies() {
   function getSearchMovies(searchInputValue) {
     setFoundMovies(movies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
     setCounter(1);
+    setIsError(false);
+    setIsLoading(false);
   }
 
   function toogleCheckboxState() {
@@ -43,9 +61,15 @@ function Movies() {
   }
 
   function renderMovies() {
-
     let quantityMovies;
-    (window.innerWidth > 800) ? (quantityMovies = 16*counter) : ((window.innerWidth > 414) ? (quantityMovies = 8*counter) : (quantityMovies = 5*counter));
+
+    (window.innerWidth > 800) ? (
+      quantityMovies = quantityMoviesL*counter
+    ) : (
+      (window.innerWidth > 414) ? (
+        quantityMovies = quantityMoviesM*counter
+      ) : (quantityMovies = quantityMoviesS*counter));
+
     (checkboxState) ? (
       setMoviesForRender(foundMovies.filter(movie => movie.duration<20).slice(0,quantityMovies))
     ) : (
@@ -54,20 +78,24 @@ function Movies() {
     localStorage.setItem("counter", JSON.stringify(counter));
     localStorage.setItem("checkbox", JSON.stringify(checkboxState));
     localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
-    console.log(checkboxState, counter); 
+  }
+
+  function renderNotFound() {
+    (moviesForRender.length === 0) ? setNotFound(true) : setNotFound(false);
   }
 
   useEffect(() => {
-    renderMovies()
+    renderMovies();
+    renderNotFound();
   }, [counter, foundMovies, checkboxState]);
- 
+
   useEffect(() => {
     (checkboxState) ? (
       ((moviesForRender.length === foundMovies.filter(movie => movie.duration<20).length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
     ) : (
       ((moviesForRender.length === foundMovies.length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
     );
-    
+    renderNotFound();
   }, [moviesForRender]);
 
   return (
@@ -78,6 +106,13 @@ function Movies() {
         checkboxState={checkboxState}
         toogleCheckboxState={toogleCheckboxState}
       />
+      {
+        <InfoTip 
+          notFound={notFound}
+          isLoading={isLoading}
+          isError={isError}
+        />
+      }
       <MoviesCardList 
         onSavedMovies={false}
         moviesForRender={moviesForRender}

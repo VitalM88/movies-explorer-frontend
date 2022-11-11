@@ -1,4 +1,4 @@
-import { apiSettings } from "./utils.js";
+import { apiSettings } from "./constans.js";
 
 class MoviesApi {
   constructor(options) {

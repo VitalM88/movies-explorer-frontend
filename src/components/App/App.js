@@ -71,7 +71,7 @@ function App() {
   }
 
   function handleLogin(data) {
-    auth.login(data)
+    auth.login({email: data.email, password: data.password})
       .then((res) => {
         localStorage.setItem("jwt", res.token);
         handleCheckToken();
