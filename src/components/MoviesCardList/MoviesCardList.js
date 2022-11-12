@@ -1,7 +1,13 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ moviesForRender, onSavedMovies, getMoreMovies, moreButtonHidden }) {
+function MoviesCardList({ 
+  moviesForRender, 
+  onSavedMovies, 
+  getMoreMovies, 
+  moreButtonHidden, 
+  token,
+}) {
 
   return (
     <>
@@ -13,6 +19,7 @@ function MoviesCardList({ moviesForRender, onSavedMovies, getMoreMovies, moreBut
               key={movie.id}
               onSavedMovies={onSavedMovies}
               movie={movie}
+              token={token}
             />
           )
         })}

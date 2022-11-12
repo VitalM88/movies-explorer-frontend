@@ -1,15 +1,92 @@
 import React, { useState } from 'react';
 import './MoviesCard.css';
 import { apiSettings } from "../../utils/constans";
+import mainApi from '../../utils/MainApi';
+import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
-function MoviesCard({ onSavedMovies, movie }) {
-  const [btnState, toogleBtnState] = useState('false');
+function MoviesCard({ onSavedMovies, movie, token }) {
+  const [isSavedMovie, setIsSavedMovie] = useState(false);
+  //const [savedMovies, setSavedMovies] = useState([]);
 
-  const handleClick = () => {
-    toogleBtnState(s => !s);
-  };
 
-  const btnStyle = (onSavedMovies ? "saved-movies" : (!btnState ? "is-saved" : ""));
+
+  const currentUser = React.useContext(CurrentUserContext);
+
+  /**useEffect(() => {
+    setStateSaveBtn()
+  }, [])
+
+  function setStateSaveBtn() {
+    mainApi.getMovies(token)
+      .then((data) => {
+        let mov = data.find(item => item.movieId == movie.movieId);
+        mov ? (
+          (mov.owner === currentUser._id) ? (
+            setIsSavedMovie(true)
+          ) : (
+            setIsSavedMovie(false)
+          )
+        ) : (
+          setIsSavedMovie(false)
+        )
+      })
+  }**/
+
+  function handleClick(e) {
+    e.preventDefault();
+    const movieForSave = {
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: apiSettings.moviesUrl + movie.image.url,
+      trailerLink: movie.trailerLink,
+      thumbnail: apiSettings.moviesUrl + movie.image.url,
+      movieId: movie.id,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+    };
+
+    mainApi.getMovies(token)
+      .then((data) => {
+        
+        let mov = data.find(item => item.nameRU == movie.nameRU);
+        mov ? (
+          (mov.owner === currentUser._id) ? (
+            mainApi.deleteMovie(mov._id, token)
+              .then(() => {
+                console.log(data);
+                setIsSavedMovie(isSavedMovie => !isSavedMovie);
+              }).catch((err) => {
+                console.log(`Ошибка: ${err}`);
+              })
+          ) : (
+            mainApi.saveMovie(movieForSave, token)
+              .then(() => {
+                console.log(data);
+                setIsSavedMovie(isSavedMovie => !isSavedMovie);
+              }).catch((err) => {
+                console.log(`Ошибка: ${err}`);
+              })
+          )
+        ) : (
+          mainApi.saveMovie(movieForSave, token)
+            .then(() => {
+              console.log(data);
+              setIsSavedMovie(isSavedMovie => !isSavedMovie);
+            }).catch((err) => {
+              console.log(`Ошибка: ${err}`);
+            })
+        )
+        
+        console.log(mov);
+      })
+      
+  }
+
+
+  const btnStyle = (onSavedMovies ? "saved-movies" : (isSavedMovie ? "is-saved" : ""));
 
   return (
     <li className="movie">

@@ -1,7 +1,7 @@
 import './SearchForm.css';
 import { useState } from 'react';
 
-function SearchForm({ getSearchMovies, checkboxState, toogleCheckboxState }) {
+function SearchForm({ getSearchMovies, checkboxStateRender, toogleCheckboxState }) {
   
   //  const [isValid, setIsValid] = useState(false);
   const [errorState, setErrorState] = useState("");
@@ -30,6 +30,10 @@ function SearchForm({ getSearchMovies, checkboxState, toogleCheckboxState }) {
     toogleCheckboxState();
   }
 
+  function handleOnChange() {
+    console.log('');
+  }
+  
   return (
     <form 
       className="search-form" 
@@ -58,8 +62,9 @@ function SearchForm({ getSearchMovies, checkboxState, toogleCheckboxState }) {
             <input 
               className="search-form__checkbox" 
               type="checkbox" 
-              checked={checkboxState} 
-              onChange={handleToogleCheckboxState}
+              checked={checkboxStateRender} 
+              onClick={handleToogleCheckboxState}
+              onChange={handleOnChange}
             />
             <span className="search__slider" />
           </label>

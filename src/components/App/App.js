@@ -65,8 +65,8 @@ function App() {
         setUserEmail(res.email);
         setUserName(res.name);
       })
-      .catch(() => {
-
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
       });
   }
 
@@ -108,7 +108,9 @@ function App() {
           <Route exact path="/" element={<Main />} />
          
           <Route exact path="/movies" 
-            element={<Movies />} 
+            element={<Movies 
+              token={token}
+            />} 
           />
   
           <Route exact path="/saved-movies" element={<SavedMovies />}/>
