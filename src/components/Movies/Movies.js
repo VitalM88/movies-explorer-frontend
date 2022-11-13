@@ -1,5 +1,5 @@
 import './Movies.css';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
@@ -10,71 +10,83 @@ import {
   quantityMoviesM,
   quantityMoviesS,
 } from '../../utils/constans.js'
+//import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
 import moviesApi from '../../utils/MoviesApi';
+import mainApi from '../../utils/MainApi';
 
-function Movies({token}) {
+function Movies({ token }) {
 
-  //const [movies, setMovies] = useState([]);
-  //const [counter, setCounter] = useState(JSON.parse(localStorage.getItem("counter")) || 1);
+  //const currentUser = React.useContext(CurrentUserContext);
   const [moviesForRender, setMoviesForRender] = useState([]);
   const [moreButtonHidden, setMoreButtonHidden] = useState(false);
-  const [foundMovies, setFoundMovies] = useState([]);
-  const [checkboxStateRender, setCheckboxStateRender] = useState(JSON.parse(localStorage.getItem("checkboxState")) || false);
   const [notFound , setNotFound] = useState(false);
-  const [isLoading , setIsLoading] = useState(false);
   const [isError , setIsError] = useState(false);
   
-  let checkboxState = (JSON.parse(localStorage.getItem("checkboxState")) || false);
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
-  let searchInputValue = (JSON.parse(localStorage.getItem("searchInputValue")) || "");
+  let foundMovies = (JSON.parse(localStorage.getItem("foundMovies")) || []);
   let movies;
+  //let savedMovies = (JSON.parse(localStorage.getItem("savedMovies")) || []);
+  //let userSavedMovies = (JSON.parse(localStorage.getItem("userSavedMovies")) || []);
+  let checkboxState = (JSON.parse(localStorage.getItem("checkboxState")) || "false");
 
-  useEffect(() => {
+  /**useEffect(() => {
     moviesApi.getMovies()
       .then((data) => {
         localStorage.setItem("movies", JSON.stringify(data));
-        //setMovies(JSON.parse(localStorage.getItem("movies")));
         movies = (JSON.parse(localStorage.getItem("movies")));
-        getSearchMovies(searchInputValue);
+        renderMovies();
       })
       .catch((err) => {
         setIsError(true);
         console.log(`Ошибка: ${err}`);
       });
-  }, []);
+    mainApi.getMovies(token)
+      .then((data) => {
+        localStorage.setItem("savedMovies", JSON.stringify(data));
+      }).catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
+  }, []);**/
 
-  //useEffect(() => {
-  //  getSearchMovies(searchInputValue);
-  //}, [foundMovies]);
-
-
-  //function getMoreMovies() {
-  //  setCounter(counter => counter + 1);
+  
+  
+  //function getUserSavedMovies() {
+  //  userSavedMovies = savedMovies.filter(item => item.owner === currentUser._id);
+  //  localStorage.setItem("userSavedMovies", JSON.stringify(userSavedMovies));
   //}
 
   async function getSearchMovies(searchInputValue) {
-    setIsLoading(true);
     try {
-      setFoundMovies(movies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
+      await moviesApi.getMovies()
+        .then((data) => {
+          localStorage.setItem("movies", JSON.stringify(data));
+          movies = (JSON.parse(localStorage.getItem("movies")));
+          renderMovies();
+        })
+        .catch((err) => {
+          setIsError(true);
+          console.log(`Ошибка: ${err}`);
+        });
+      await mainApi.getMovies(token)
+        .then((data) => {
+          localStorage.setItem("savedMovies", JSON.stringify(data));
+        }).catch((err) => {
+          console.log(`Ошибка: ${err}`);
+        });
+    } catch(err) {
+      console.log(`Ошибка: ${err}`);
+    } finally {
+      movies = (JSON.parse(localStorage.getItem("movies")));
+      foundMovies = (movies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
+      localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
       localStorage.setItem("counter", JSON.stringify(1));
-      setIsError(false);
-      setIsLoading(false);
-    } catch {
-      setIsError(true);
+      renderMovies();
     }
   }
 
-  //function toogleCheckboxState() {
-  //  setcheckboxState(s => !s);
-  //}
-
   function toogleCheckboxState() {
-    checkboxState = !checkboxState;
-    localStorage.setItem("checkboxState", JSON.stringify(checkboxState));
-    setCheckboxStateRender(checkboxState);
     renderMovies();
-    renderNotFound();
   }
 
   function getMoreMovies () {
@@ -82,7 +94,6 @@ function Movies({token}) {
     counter = counter+1;
     localStorage.setItem("counter", JSON.stringify(counter));
     renderMovies();
-    renderNotFound();
   }
 
   function getQuantityMovies () {
@@ -97,49 +108,34 @@ function Movies({token}) {
   }
 
   function renderMovies() {
+    let filteredMovies;
+    checkboxState = JSON.parse(localStorage.getItem("checkboxState"));
     (checkboxState) ? (
-      setMoviesForRender(foundMovies.filter(movie => movie.duration<20).slice(0,getQuantityMovies()))
+      filteredMovies = (foundMovies.filter(movie => movie.duration<20).slice(0,getQuantityMovies()))
     ) : (
-      setMoviesForRender(foundMovies.slice(0,getQuantityMovies()))
+      filteredMovies = (foundMovies.slice(0,getQuantityMovies()))
     );
-    localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
-  }
-
-  function renderNotFound() {
-    (moviesForRender.length === 0) ? setNotFound(true) : setNotFound(false);
-  }
-
-  function renderMoreButton() {
     (checkboxState) ? (
-      ((moviesForRender.length === foundMovies.filter(movie => movie.duration<20).length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
+      ((filteredMovies.length === foundMovies.filter(movie => movie.duration<20).length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
     ) : (
-      ((moviesForRender.length === foundMovies.length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
+      (filteredMovies.length === foundMovies.length) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
     );
+    (filteredMovies.length === 0) ? setNotFound(true) : setNotFound(false);
+    
+    setMoviesForRender(filteredMovies);
   }
-
-
-  useEffect(() => {
-    renderMovies();
-    renderNotFound();
-  }, [foundMovies]);
-
-  useEffect(() => {
-    renderMoreButton();
-    renderNotFound();
-  }, [moviesForRender]);
 
   return (
     <section className="movies">
       <Header state="header_nav" />
       <SearchForm 
         getSearchMovies={getSearchMovies}
-        checkboxStateRender={checkboxStateRender}
         toogleCheckboxState={toogleCheckboxState}
       />
       {
         <InfoTip 
           notFound={notFound}
-          isLoading={isLoading}
+          isLoading={false}
           isError={isError}
         />
       }
@@ -149,6 +145,7 @@ function Movies({token}) {
         getMoreMovies={getMoreMovies}
         moreButtonHidden={moreButtonHidden}
         token={token}
+
       />
       
       <Footer />

@@ -113,7 +113,10 @@ function App() {
             />} 
           />
   
-          <Route exact path="/saved-movies" element={<SavedMovies />}/>
+          <Route exact path="/saved-movies" 
+            element={<SavedMovies 
+              token={token}
+            />}/>
   
           <Route exact path="/profile" 
             element={<Profile 

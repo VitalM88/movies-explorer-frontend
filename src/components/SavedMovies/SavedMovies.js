@@ -1,15 +1,115 @@
 import './SavedMovies.css';
+import { useState } from 'react';
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import Footer from '../Footer/Footer';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import InfoTip from '../InfoTip/InfoTip';
+import {
+  quantityMoviesL,
+  quantityMoviesM,
+  quantityMoviesS,
+} from '../../utils/constans.js'
 
-function SavedMovies() {
+import mainApi from '../../utils/MainApi';
+
+function SavedMovies({ token }) {
+
+  const [moviesForRender, setMoviesForRender] = useState([]);
+  const [moreButtonHidden, setMoreButtonHidden] = useState(false);
+  const [notFound , setNotFound] = useState(false);
+  //const [isError , setIsError] = useState(false);
+  
+  let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
+  let foundSavedMovies = (JSON.parse(localStorage.getItem("foundSavedMovies")) || []);
+  let savedMovies;
+  let checkboxState = (JSON.parse(localStorage.getItem("checkboxState")) || "false");
+  //let searchInputValue = (JSON.parse(localStorage.getItem("searchInputValue")) || "");
+
+  //useEffect(() => {
+  //  getSearchMovies(searchInputValue);
+  //}, [foundSavedMovies]);
+
+  async function getSearchMovies(searchInputValue) {
+    try {
+      await mainApi.getMovies(token)
+        .then((data) => {
+          localStorage.setItem("savedMovies", JSON.stringify(data));
+        }).catch((err) => {
+          console.log(`Ошибка: ${err}`);
+        });
+    } catch(err) {
+      console.log(`Ошибка: ${err}`);
+    } finally {
+      savedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
+      foundSavedMovies = (savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
+      localStorage.setItem("foundSavedMovies", JSON.stringify(foundSavedMovies));
+      localStorage.setItem("counter", JSON.stringify(1));
+      renderMovies();
+    }
+  }
+
+  function toogleCheckboxState() {
+    renderMovies();
+  }
+
+  function getMoreMovies () {
+    counter = (JSON.parse(localStorage.getItem("counter")) || 1);
+    counter = counter+1;
+    localStorage.setItem("counter", JSON.stringify(counter));
+    renderMovies();
+  }
+
+  function getQuantityMovies () {
+    let quantityMovies;
+    (window.innerWidth > 800) ? (
+      quantityMovies = quantityMoviesL*counter
+    ) : (
+      (window.innerWidth > 414) ? (
+        quantityMovies = quantityMoviesM*counter
+      ) : (quantityMovies = quantityMoviesS*counter));
+    return(quantityMovies);
+  }
+
+  function renderMovies() {
+    let filteredMovies;
+    checkboxState = JSON.parse(localStorage.getItem("checkboxState"));
+    (checkboxState) ? (
+      filteredMovies = (foundSavedMovies.filter(movie => movie.duration<20).slice(0,getQuantityMovies()))
+    ) : (
+      filteredMovies = (foundSavedMovies.slice(0,getQuantityMovies()))
+    );
+    (checkboxState) ? (
+      ((filteredMovies.length === foundSavedMovies.filter(movie => movie.duration<20).length)) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
+    ) : (
+      (filteredMovies.length === foundSavedMovies.length) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
+    );
+    (filteredMovies.length === 0) ? setNotFound(true) : setNotFound(false);
+    
+    setMoviesForRender(filteredMovies);
+  }
+
   return (
     <section className="saved-movies">
       <Header state="header_nav" />
-      <SearchForm />
-      <MoviesCardList onSavedMovies={true}/>
+      <SearchForm 
+        getSearchMovies={getSearchMovies}
+        toogleCheckboxState={toogleCheckboxState}
+      />
+      {
+        <InfoTip 
+          notFound={notFound}
+          isLoading={false}
+          isError={false}
+        />
+      }
+      <MoviesCardList 
+        onSavedMovies={true}
+        moviesForRender={moviesForRender}
+        getMoreMovies={getMoreMovies}
+        moreButtonHidden={moreButtonHidden}
+        token={token}
+      />
       <Footer />
     </section>
   );

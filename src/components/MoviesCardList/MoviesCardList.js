@@ -7,6 +7,7 @@ function MoviesCardList({
   getMoreMovies, 
   moreButtonHidden, 
   token,
+
 }) {
 
   return (
@@ -16,10 +17,11 @@ function MoviesCardList({
         {moviesForRender.map((movie) => {
           return (
             <MoviesCard 
-              key={movie.id}
+              key={movie.id || movie.movieId}
               onSavedMovies={onSavedMovies}
               movie={movie}
               token={token}
+
             />
           )
         })}

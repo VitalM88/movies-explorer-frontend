@@ -1,20 +1,18 @@
 import './SearchForm.css';
 import { useState } from 'react';
 
-function SearchForm({ getSearchMovies, checkboxStateRender, toogleCheckboxState }) {
+function SearchForm({ getSearchMovies, toogleCheckboxState }) {
   
-  //  const [isValid, setIsValid] = useState(false);
   const [errorState, setErrorState] = useState("");
   const [searchInputValue, setSearchInputValue] = useState(JSON.parse(localStorage.getItem("searchInputValue")) || "");
   
+  let checkboxState = JSON.parse(localStorage.getItem("checkboxState"));
 
   function handleChangeInput(e) {
     setSearchInputValue(e.target.value);
     !e.target.value ? (
-    //    setIsValid(false),
       setErrorState("active")
     ) : (
-    //     setIsValid(true),
       setErrorState("")
     )
   }
@@ -25,15 +23,13 @@ function SearchForm({ getSearchMovies, checkboxStateRender, toogleCheckboxState 
     localStorage.setItem("searchInputValue", JSON.stringify(searchInputValue));
   } 
   
-  function handleToogleCheckboxState(e) {
-    e.preventDefault();
+  function handleToogleCheckboxState() {
+    (checkboxState = !checkboxState);
+    localStorage.setItem("checkboxState", JSON.stringify(checkboxState));
     toogleCheckboxState();
   }
-
-  function handleOnChange() {
-    console.log('');
-  }
   
+
   return (
     <form 
       className="search-form" 
@@ -62,9 +58,8 @@ function SearchForm({ getSearchMovies, checkboxStateRender, toogleCheckboxState 
             <input 
               className="search-form__checkbox" 
               type="checkbox" 
-              checked={checkboxStateRender} 
-              onClick={handleToogleCheckboxState}
-              onChange={handleOnChange}
+              onChange={handleToogleCheckboxState}
+              checked={checkboxState}
             />
             <span className="search__slider" />
           </label>
