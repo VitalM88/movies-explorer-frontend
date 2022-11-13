@@ -4,7 +4,7 @@ import { apiSettings } from "../../utils/constans";
 import mainApi from '../../utils/MainApi';
 //import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
-function MoviesCard({ onSavedMovies, movie, token }) {
+function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
   const [isSavedMovie, setIsSavedMovie] = useState('');
  
   let savedMovies = [];
@@ -59,6 +59,7 @@ function MoviesCard({ onSavedMovies, movie, token }) {
       mainApi.getMovies(token)
         .then((data) => {
           localStorage.setItem("savedMovies", JSON.stringify(data));
+          deleteMovie();
         }).catch((err) => {
           console.log(`Ошибка: ${err}`);
         });

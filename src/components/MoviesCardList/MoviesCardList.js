@@ -7,7 +7,7 @@ function MoviesCardList({
   getMoreMovies, 
   moreButtonHidden, 
   token,
-
+  deleteMovie,
 }) {
 
   return (
@@ -21,7 +21,7 @@ function MoviesCardList({
               onSavedMovies={onSavedMovies}
               movie={movie}
               token={token}
-
+              deleteMovie={deleteMovie}
             />
           )
         })}
