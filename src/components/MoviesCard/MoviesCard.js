@@ -59,7 +59,7 @@ function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
       mainApi.getMovies(token)
         .then((data) => {
           localStorage.setItem("savedMovies", JSON.stringify(data));
-          deleteMovie();
+          onSavedMovies ? (deleteMovie()) : (null);
         }).catch((err) => {
           console.log(`Ошибка: ${err}`);
         });

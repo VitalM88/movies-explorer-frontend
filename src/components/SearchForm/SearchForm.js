@@ -19,8 +19,12 @@ function SearchForm({ getSearchMovies, toogleCheckboxState }) {
 
   function handleGetMovies(e) {
     e.preventDefault();
-    getSearchMovies(searchInputValue);
-    localStorage.setItem("searchInputValue", JSON.stringify(searchInputValue));
+    if (searchInputValue) {
+      getSearchMovies(searchInputValue);
+      localStorage.setItem("searchInputValue", JSON.stringify(searchInputValue));
+    } else {
+      setErrorState("active")
+    }
   } 
   
   function handleToogleCheckboxState() {

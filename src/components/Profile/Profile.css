@@ -45,6 +45,24 @@
     font-weight: 400;
     font-size: 11px;
     line-height: 1.18;
+    border: none;
+    background: none;
+    text-align: end;
+    color: #FFFFFF;
+}
+
+.profile__info:focus {
+    outline: none;
+    text-align: start;
+}
+
+.profile__info:focus::placeholder {
+    color: transparent;
+}
+
+.profile__info::placeholder {
+    color: #FFFFFF;
+    opacity: 1;
 }
 
 .profile__button {

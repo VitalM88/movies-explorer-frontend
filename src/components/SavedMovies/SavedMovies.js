@@ -16,9 +16,10 @@ import mainApi from '../../utils/MainApi';
 function SavedMovies({ token }) {
 
   const [moviesForRender, setMoviesForRender] = useState([]);
-  const [moreButtonHidden, setMoreButtonHidden] = useState(false);
+  const [moreButtonHidden, setMoreButtonHidden] = useState(true);
   const [notFound , setNotFound] = useState(false);
-  //const [isError , setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError , setIsError] = useState(false);
   
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
   let foundSavedMovies = (JSON.parse(localStorage.getItem("foundSavedMovies")) || []);
@@ -35,7 +36,15 @@ function SavedMovies({ token }) {
   }
 
   async function getSearchMovies(searchInputValue) {
+    
+    savedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
+    foundSavedMovies = [];
+    localStorage.setItem("foundSavedMovies", JSON.stringify([]));
+    localStorage.setItem("counter", JSON.stringify(1));
+    renderMovies();
     try {
+      setIsLoading(true);
+      setIsError(false);
       await mainApi.getMovies(token)
         .then((data) => {
           localStorage.setItem("savedMovies", JSON.stringify(data));
@@ -43,13 +52,17 @@ function SavedMovies({ token }) {
           console.log(`Ошибка: ${err}`);
         });
     } catch(err) {
+      setIsLoading(false);
+      setIsError(true);
       console.log(`Ошибка: ${err}`);
     } finally {
-      savedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
-      foundSavedMovies = (savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
-      localStorage.setItem("foundSavedMovies", JSON.stringify(foundSavedMovies));
-      localStorage.setItem("counter", JSON.stringify(1));
-      renderMovies();
+      if (searchInputValue) {
+        setIsLoading(false);
+        foundSavedMovies = (savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
+        localStorage.setItem("foundSavedMovies", JSON.stringify(foundSavedMovies));
+        localStorage.setItem("counter", JSON.stringify(1));
+        renderMovies();
+      }
     }
   }
 
@@ -103,8 +116,8 @@ function SavedMovies({ token }) {
       {
         <InfoTip 
           notFound={notFound}
-          isLoading={false}
-          isError={false}
+          isLoading={isLoading}
+          isError={isError}
         />
       }
       <MoviesCardList 

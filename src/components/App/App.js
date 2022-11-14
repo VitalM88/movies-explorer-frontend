@@ -85,15 +85,25 @@ function App() {
   function handleSignOut() {
     setIsLoggedIn(false);
     localStorage.removeItem("jwt");
+    localStorage.removeItem("checkboxState");
+    localStorage.removeItem("foundMovies");
+    localStorage.removeItem("counter");
+    localStorage.removeItem("movies");
+    localStorage.removeItem("savedMovies");
+    localStorage.removeItem("foundSavedMovies");
+    localStorage.removeItem("searchInputValue");
     setUserEmail("");
     setUserName("");
     setToken('');
+    navigate("/");
   }
 
   function handleUpdateUser(userData) {
-    mainApi.editUserInfo(userData, token)
+    mainApi.editUserInfo({name: userData.name, email: userData.email}, token)
       .then((newUserData) => {
         setCurrentUser(newUserData);
+        setUserEmail(newUserData.email);
+        setUserName(newUserData.name);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);

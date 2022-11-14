@@ -19,9 +19,10 @@ function Movies({ token }) {
 
   //const currentUser = React.useContext(CurrentUserContext);
   const [moviesForRender, setMoviesForRender] = useState([]);
-  const [moreButtonHidden, setMoreButtonHidden] = useState(false);
+  const [moreButtonHidden, setMoreButtonHidden] = useState(true);
   const [notFound , setNotFound] = useState(false);
   const [isError , setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
   let foundMovies = (JSON.parse(localStorage.getItem("foundMovies")) || []);
@@ -57,7 +58,14 @@ function Movies({ token }) {
   //}
 
   async function getSearchMovies(searchInputValue) {
+    movies = (JSON.parse(localStorage.getItem("movies")));
+    foundMovies = [];
+    localStorage.setItem("foundMovies", JSON.stringify([]));
+    localStorage.setItem("counter", JSON.stringify(1));
+    renderMovies();
     try {
+      setIsError(false);
+      setIsLoading(true);
       await moviesApi.getMovies()
         .then((data) => {
           localStorage.setItem("movies", JSON.stringify(data));
@@ -65,7 +73,7 @@ function Movies({ token }) {
           renderMovies();
         })
         .catch((err) => {
-          setIsError(true);
+          
           console.log(`Ошибка: ${err}`);
         });
       await mainApi.getMovies(token)
@@ -76,12 +84,18 @@ function Movies({ token }) {
         });
     } catch(err) {
       console.log(`Ошибка: ${err}`);
+      setIsError(true);
+      setIsLoading(false);
     } finally {
-      movies = (JSON.parse(localStorage.getItem("movies")));
-      foundMovies = (movies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
-      localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
-      localStorage.setItem("counter", JSON.stringify(1));
-      renderMovies();
+      if (searchInputValue) {
+        
+        foundMovies = (movies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
+        localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
+        localStorage.setItem("counter", JSON.stringify(1));
+        renderMovies();
+        setIsLoading(false);
+      }
+      
     }
   }
 
@@ -135,7 +149,7 @@ function Movies({ token }) {
       {
         <InfoTip 
           notFound={notFound}
-          isLoading={false}
+          isLoading={isLoading}
           isError={isError}
         />
       }
