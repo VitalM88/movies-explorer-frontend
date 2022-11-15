@@ -12,6 +12,7 @@ import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 import mainApi from "../../utils/MainApi";
 import auth from "../../utils/auth";
+import ProtectedRoute from "../../utils/ProtectedRoute";
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 
@@ -117,24 +118,28 @@ function App() {
           
           <Route exact path="/" element={<Main />} />
          
-          <Route exact path="/movies" 
-            element={<Movies 
-              token={token}
-            />} 
+          <Route exact path="/movies" element={<ProtectedRoute
+            component={Movies}
+            token={token}
+            isLoggedIn={isLoggedIn}
+          />} 
           />
   
-          <Route exact path="/saved-movies" 
-            element={<SavedMovies 
-              token={token}
-            />}/>
+          <Route exact path="/saved-movies" element={<ProtectedRoute
+            component={SavedMovies}
+            token={token}
+            isLoggedIn={isLoggedIn}
+          />}
+          />
   
-          <Route exact path="/profile" 
-            element={<Profile 
-              signOut={handleSignOut}
-              updateUser={handleUpdateUser}
-              userEmail={userEmail}
-              userName={userName}
-            />}
+          <Route exact path="/profile" element={<ProtectedRoute
+            component={Profile} 
+            signOut={handleSignOut}
+            updateUser={handleUpdateUser}
+            userEmail={userEmail}
+            userName={userName}
+            isLoggedIn={isLoggedIn}
+          />}
           />
   
           <Route path="/signup" 
