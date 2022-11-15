@@ -12,7 +12,6 @@ function InfoTip({ notFound, isLoading, isError }) {
         isLoading ? (
           <>
             <Preloader />
-            <div>{`${isLoading}`}</div>
           </>
         ) : (isError ? (
           <p className = "info-tip__text">

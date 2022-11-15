@@ -32,6 +32,7 @@ function Profile({
       <form 
         className="profile__form"
         onSubmit={handleSubmit}
+        noValidate
       >
         <div className="profile__container">
           <span className="profile__tag">Имя</span>
@@ -42,7 +43,9 @@ function Profile({
             placeholder={userName}
             minLength="2"
             maxLength="40"
+            pattern="^[a-zA-Zа-яА-ЯЁё\s\-]+$"
             onChange={handleChangeName}
+            required
           />
         </div>
         <div className="profile__container">
@@ -56,6 +59,7 @@ function Profile({
             minLength="2"
             maxLength="40"
             onChange={handleChangeEmail}
+            required
           />
         </div>
         <button 

@@ -1,46 +1,49 @@
 import './Form.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+//import { useFormWithValidation } from '../../utils/validation.js'
 
 function Form({buttonSubmitText, state, onSubmit}) {
 
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
+  const navigate = useNavigate();
+  const [values, setValues] = useState({});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
-  function handleChangeName(e) {
-    setUserName(e.target.value);
-  }
-
-  function handleChangeEmail(e) {
-    setUserEmail(e.target.value);
-  }
-
-  function handleChangePassword(e) {
-    setUserPassword(e.target.value);
-  }
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({...values, [name]: value});
+    setErrors({...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit({name: userName, email: userEmail, password: userPassword});
+    (state == "register") ? navigate("/signin") : navigate("/movies")
+    isValid ? onSubmit({name: values.name, email: values.email, password: values.password}) : (null)
   }
 
   return (
     <form 
       className="form" 
       onSubmit={handleSubmit}
+      noValidate
     >
       { state === "register" ? (
         <label className={"form__field"}>
           <h3 className="form_text">Имя</h3>
           <input
             name="name"
-            value={ userName || "" }
-            onChange={handleChangeName}
+            value={ values.name || "" }
+            onChange={handleChange}
             className="form__input form__input_type_name"
             minLength="2"
             maxLength="40"
+            pattern="^[a-zA-Zа-яА-ЯЁё\s\-]+$"
             required />
-          <span className="form__input-error"></span>
+          <span className="form__input-error">{errors.name}</span>
         </label>
       ) : ''
       }
@@ -49,13 +52,13 @@ function Form({buttonSubmitText, state, onSubmit}) {
         <input
           type="email"
           name="email"
-          value={ userEmail || "" }
-          onChange={handleChangeEmail}
+          value={ values.email || "" }
+          onChange={handleChange}
           className="form__input form__input_type_email"
           minLength="2"
           maxLength="40"
           required />
-        <span className="form__input-error"></span>
+        <span className="form__input-error">{errors.email}</span>
       </label>
 
       <label className="form__field">
@@ -63,18 +66,19 @@ function Form({buttonSubmitText, state, onSubmit}) {
         <input
           type="password"
           name="password"
-          value={ userPassword || "" }
-          onChange={handleChangePassword}
+          value={ values.password || "" }
+          onChange={handleChange}
           className="form__input form__input_type_password"
           minLength="8"
           maxLength="40"
           required />
-        <span className="form__input-error"></span>
+        <span className="form__input-error">{errors.password}</span>
       </label>
 
       <button
         type="submit"
         className="form__submit"
+        disabled={!isValid}
       >
         { buttonSubmitText }
       </button>
