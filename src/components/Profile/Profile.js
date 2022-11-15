@@ -9,20 +9,22 @@ function Profile({
   userName,
 }) {
 
-  const [newUserName, setNewUserName] = useState(userName);
-  const [newUserEmail, setNewUserEmail] = useState(userEmail);
+  const [values, setValues] = useState({name: userName, email: userEmail});
+  const [errors, setErrors] = useState({});
+  const [isValid, setIsValid] = useState(false);
 
-  function handleChangeName(e) {
-    setNewUserName(e.target.value);
-  }
-
-  function handleChangeEmail(e) {
-    setNewUserEmail(e.target.value);
-  }
+  const handleChange = (event) => {
+    const target = event.target;
+    const name = target.name;
+    const value = target.value;
+    setValues({...values, [name]: value});
+    setErrors({...errors, [name]: target.validationMessage });
+    setIsValid(target.closest("form").checkValidity());
+  };
 
   function handleSubmit(e) {
     e.preventDefault();
-    updateUser({name: (newUserName), email: (newUserEmail)});
+    updateUser({name: values.name, email: values.email});
   }
 
   return (
@@ -39,32 +41,35 @@ function Profile({
           <input 
             className="profile__info"
             name="name"
-            value={ newUserName || "" }
+            value={ values.name || "" }
             placeholder={userName}
             minLength="2"
             maxLength="40"
             pattern="^[a-zA-Zа-яА-ЯЁё\s\-]+$"
-            onChange={handleChangeName}
+            onChange={handleChange}
             required
           />
         </div>
+        <span className="profile__input-error">{errors.name}</span>
         <div className="profile__container">
           <span className="profile__tag">E-mail</span>
           <input 
             type="email"
             className="profile__info"
-            name="name"
-            value={ newUserEmail || "" }
+            name="email"
+            value={ values.email || "" }
             placeholder={userEmail}
             minLength="2"
             maxLength="40"
-            onChange={handleChangeEmail}
+            onChange={handleChange}
             required
           />
         </div>
+        <span className="profile__input-error">{errors.email}</span>
         <button 
           className="profile__button" 
           type="submit"
+          disabled={!isValid}
         >
           Редактировать
         </button>

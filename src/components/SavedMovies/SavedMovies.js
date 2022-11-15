@@ -23,13 +23,9 @@ function SavedMovies({ token }) {
   
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
   let foundSavedMovies = (JSON.parse(localStorage.getItem("foundSavedMovies")) || []);
-  let savedMovies;
+  let savedMovies = (JSON.parse(localStorage.getItem("savedMovies")) || []);
   let checkboxState = (JSON.parse(localStorage.getItem("checkboxState")) || "false");
   let searchInputValue = (JSON.parse(localStorage.getItem("searchInputValue")) || "");
-
-  //useEffect(() => {
-  //  getSearchMovies(searchInputValue);
-  //}, [foundSavedMovies]);
 
   function deleteMovie() {
     getSearchMovies(searchInputValue);

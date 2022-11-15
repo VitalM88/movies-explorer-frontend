@@ -26,36 +26,8 @@ function Movies({ token }) {
   
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
   let foundMovies = (JSON.parse(localStorage.getItem("foundMovies")) || []);
-  let movies;
-  //let savedMovies = (JSON.parse(localStorage.getItem("savedMovies")) || []);
-  //let userSavedMovies = (JSON.parse(localStorage.getItem("userSavedMovies")) || []);
+  let movies = (JSON.parse(localStorage.getItem("movies")) || []);
   let checkboxState = (JSON.parse(localStorage.getItem("checkboxState")) || "false");
-
-  /**useEffect(() => {
-    moviesApi.getMovies()
-      .then((data) => {
-        localStorage.setItem("movies", JSON.stringify(data));
-        movies = (JSON.parse(localStorage.getItem("movies")));
-        renderMovies();
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.log(`Ошибка: ${err}`);
-      });
-    mainApi.getMovies(token)
-      .then((data) => {
-        localStorage.setItem("savedMovies", JSON.stringify(data));
-      }).catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
-  }, []);**/
-
-  
-  
-  //function getUserSavedMovies() {
-  //  userSavedMovies = savedMovies.filter(item => item.owner === currentUser._id);
-  //  localStorage.setItem("userSavedMovies", JSON.stringify(userSavedMovies));
-  //}
 
   async function getSearchMovies(searchInputValue) {
     movies = (JSON.parse(localStorage.getItem("movies")));
