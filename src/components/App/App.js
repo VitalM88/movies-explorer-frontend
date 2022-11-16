@@ -9,6 +9,7 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
+import EditProfileSuccesPopup from '../EditProfileSuccesPopup/EditProfileSuccesPopup'
 
 import mainApi from "../../utils/MainApi";
 import auth from "../../utils/auth";
@@ -24,6 +25,7 @@ function App() {
   const [token, setToken] = useState('');
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -105,10 +107,15 @@ function App() {
         setCurrentUser(newUserData);
         setUserEmail(newUserData.email);
         setUserName(newUserData.name);
+        setIsOpenPopup(true);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
+  }
+
+  function closePopup() {
+    setIsOpenPopup(false);
   }
 
   return (
@@ -157,6 +164,12 @@ function App() {
           <Route path="*" element={<NotFoundPage />}/>
   
         </Routes>
+
+        <EditProfileSuccesPopup
+          isOpen={isOpenPopup}
+          onClose={closePopup}
+        />
+
       </CurrentUserContext.Provider>
     </div>
   );

@@ -1,6 +1,6 @@
 import './Profile.css';
 import Header from '../Header/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Profile({
   signOut,
@@ -12,6 +12,7 @@ function Profile({
   const [values, setValues] = useState({name: userName, email: userEmail});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
+  const [isActiveBtn, setIsActiveBtn] = useState(false);
 
   const handleChange = (event) => {
     const target = event.target;
@@ -21,6 +22,14 @@ function Profile({
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
   };
+
+  useEffect(() => {
+    if ((userEmail != values.email) || (userName != values.name)) {
+      isValid ? setIsActiveBtn(true) : setIsActiveBtn(false)
+    } else {
+      setIsActiveBtn(false);
+    }
+  }, [values]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -42,7 +51,6 @@ function Profile({
             className="profile__info"
             name="name"
             value={ values.name || "" }
-            placeholder={userName}
             minLength="2"
             maxLength="40"
             pattern="^[a-zA-Zа-яА-ЯЁё\s\-]+$"
@@ -58,7 +66,6 @@ function Profile({
             className="profile__info"
             name="email"
             value={ values.email || "" }
-            placeholder={userEmail}
             minLength="2"
             maxLength="40"
             onChange={handleChange}
@@ -69,7 +76,7 @@ function Profile({
         <button 
           className="profile__button" 
           type="submit"
-          disabled={!isValid}
+          disabled={!isActiveBtn}
         >
           Редактировать
         </button>
