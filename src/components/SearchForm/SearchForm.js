@@ -1,12 +1,10 @@
 import './SearchForm.css';
 import { useState } from 'react';
 
-function SearchForm({ getSearchMovies, toogleCheckboxState }) {
+function SearchForm({ getSearchMovies, toogleCheckboxState, onMovies, checkboxState }) {
   
   const [errorState, setErrorState] = useState("");
   const [searchInputValue, setSearchInputValue] = useState(JSON.parse(localStorage.getItem("searchInputValue")) || "");
-  
-  let checkboxState = JSON.parse(localStorage.getItem("checkboxState"));
 
   function handleChangeInput(e) {
     setSearchInputValue(e.target.value);
@@ -28,9 +26,10 @@ function SearchForm({ getSearchMovies, toogleCheckboxState }) {
   } 
   
   function handleToogleCheckboxState() {
-    (checkboxState = !checkboxState);
-    localStorage.setItem("checkboxState", JSON.stringify(checkboxState));
-    toogleCheckboxState();
+    onMovies ? (checkboxState = JSON.parse(localStorage.getItem("checkboxState"))) : (null);
+    const newCheckboxState = !checkboxState;
+    onMovies ? (localStorage.setItem("checkboxState", JSON.stringify(newCheckboxState))) : (null);
+    toogleCheckboxState(newCheckboxState);
   }
   
 

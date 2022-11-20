@@ -93,7 +93,7 @@
 }
 
 .profile__button:disabled {
-    opacity: 1;
+    opacity: .5;
     cursor: auto;
 }
 

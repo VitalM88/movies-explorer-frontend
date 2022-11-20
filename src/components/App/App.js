@@ -26,6 +26,7 @@ function App() {
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [textPopup, setTextPopup] = useState("");
 
   const navigate = useNavigate();
 
@@ -53,12 +54,13 @@ function App() {
           setUserEmail(res.email);
           setUserName(res.name);
           setIsLoggedIn(true);
-          navigate("/movies");
           setToken(jwt);
         })
         .catch((err) => {
           console.log(`Ошибка: ${err}`);
         });
+    } else {
+      handleSignOut();
     }
   }
 
@@ -67,9 +69,12 @@ function App() {
       .then((res) => {
         setUserEmail(res.email);
         setUserName(res.name);
+        navigate("/movies");
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
+        setIsOpenPopup(true);
+        setTextPopup(`${err}`);
       });
   }
 
@@ -79,9 +84,18 @@ function App() {
         localStorage.setItem("jwt", res.token);
         handleCheckToken();
         setToken(res.token);
+        navigate("/movies");
+        mainApi.getMovies(res.token)
+          .then((data) => {
+            localStorage.setItem("savedMovies", JSON.stringify(data));
+          }).catch((err) => {
+            console.log(`Ошибка: ${err}`);
+          });
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
+        setIsOpenPopup(true);
+        setTextPopup(`${err}`);
       });
   }
 
@@ -108,6 +122,7 @@ function App() {
         setUserEmail(newUserData.email);
         setUserName(newUserData.name);
         setIsOpenPopup(true);
+        setTextPopup("Данные изменены");
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
@@ -123,7 +138,11 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           
-          <Route exact path="/" element={<Main />} />
+          <Route exact path="/" 
+            element={<Main 
+              isLoggedIn={isLoggedIn}
+            />} 
+          />
          
           <Route exact path="/movies" element={<ProtectedRoute
             component={Movies}
@@ -168,6 +187,7 @@ function App() {
         <EditProfileSuccesPopup
           isOpen={isOpenPopup}
           onClose={closePopup}
+          textPopup={textPopup}
         />
 
       </CurrentUserContext.Provider>

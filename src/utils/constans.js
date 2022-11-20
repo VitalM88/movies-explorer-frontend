@@ -10,6 +10,8 @@ const quantityMoviesL = 16;
 const quantityMoviesM = 8;
 const quantityMoviesS = 4;
 
+const shortMovieDuration = 40;
+
 export { 
   apiSettings,
   notFoundText,
@@ -17,4 +19,5 @@ export {
   quantityMoviesL,
   quantityMoviesM,
   quantityMoviesS,
+  shortMovieDuration,
 };

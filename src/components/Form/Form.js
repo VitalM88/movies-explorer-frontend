@@ -1,18 +1,28 @@
 import './Form.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+
+import validator from 'validator';
 
 function Form({buttonSubmitText, state, onSubmit}) {
 
-  const navigate = useNavigate();
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
-
+  
   const handleChange = (event) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
+
+    if (name === 'email') {
+      if (!validator.isEmail(value)) {
+        target.setCustomValidity("Введите корректную почту");
+      } else {
+        target.setCustomValidity('');
+      }
+    }
+
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
@@ -20,8 +30,9 @@ function Form({buttonSubmitText, state, onSubmit}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    (state == "register") ? navigate("/signin") : navigate("/movies")
-    isValid ? onSubmit({name: values.name, email: values.email, password: values.password}) : (null)
+    if (isValid) {
+      onSubmit({name: values.name, email: values.email, password: values.password});
+    }
   }
 
   return (

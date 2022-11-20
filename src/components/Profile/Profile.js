@@ -2,11 +2,14 @@ import './Profile.css';
 import Header from '../Header/Header';
 import { useEffect, useState } from 'react';
 
+import validator from 'validator';
+
 function Profile({
   signOut,
   updateUser,
   userEmail,
   userName,
+  isLoggedIn
 }) {
 
   const [values, setValues] = useState({name: userName, email: userEmail});
@@ -18,6 +21,15 @@ function Profile({
     const target = event.target;
     const name = target.name;
     const value = target.value;
+
+    if (name === 'email') {
+      if (!validator.isEmail(value)) {
+        target.setCustomValidity("Введите корректную почту");
+      } else {
+        target.setCustomValidity('');
+      }
+    }
+
     setValues({...values, [name]: value});
     setErrors({...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
@@ -38,7 +50,10 @@ function Profile({
 
   return (
     <section className="profile">
-      <Header state="header_nav" />
+      <Header 
+        state="header_nav" 
+        isLoggedIn={isLoggedIn}
+      />
       <h2 className="profile__title">{`Привет, ${userName}!`}</h2>
       <form 
         className="profile__form"
