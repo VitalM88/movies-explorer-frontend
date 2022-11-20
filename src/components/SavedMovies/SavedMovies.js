@@ -36,7 +36,8 @@ function SavedMovies({ token, isLoggedIn }) {
   }, []);
 
   function deleteMovie() {
-    getSearchMovies(searchInputValue);
+    getSearchMovies(searchInputValue)
+
   }
 
   async function getSearchMovies(searchInputValue) {
@@ -64,7 +65,12 @@ function SavedMovies({ token, isLoggedIn }) {
         foundSavedMovies = (savedMovies.filter(movie => movie.nameRU.toLowerCase().includes(searchInputValue.toLowerCase())));
         localStorage.setItem("counterOnSaved", JSON.stringify(1));
         renderMovies(checkboxState);
+      } else {
+        setIsLoading(false);
+        foundSavedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
+        renderMovies(checkboxState);
       }
+  
     }
   }
 
