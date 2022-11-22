@@ -27,18 +27,12 @@ function SavedMovies({ token, isLoggedIn }) {
   let foundSavedMovies = (JSON.parse(localStorage.getItem("savedMovies")) || []);
 
   let savedMovies = (JSON.parse(localStorage.getItem("savedMovies")) || []);
-  let searchInputValue;
 
   useEffect(() => {
     localStorage.setItem("counterOnSaved", JSON.stringify(1));
     counterOnSaved = JSON.parse(localStorage.getItem("counterOnSaved"));
     renderMovies(checkboxState);
   }, []);
-
-  function deleteMovie() {
-    getSearchMovies(searchInputValue)
-
-  }
 
   async function getSearchMovies(searchInputValue) {
     
@@ -138,7 +132,6 @@ function SavedMovies({ token, isLoggedIn }) {
         getMoreMovies={getMoreMovies}
         moreButtonHidden={moreButtonHidden}
         token={token}
-        deleteMovie={deleteMovie}
       />
       <Footer />
     </section>

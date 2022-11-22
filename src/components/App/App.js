@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import Main from '../Main/Main';
@@ -21,43 +21,38 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 function App() {
 
   const [currentUser, setCurrentUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setToken] = useState('');
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("isLoggedIn") || false);
+  const [token, setToken] = useState(localStorage.getItem("jwt") || "");
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [textPopup, setTextPopup] = useState("");
 
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     handleCheckToken();
+    
   }, []);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      mainApi.getUserInfo(token)
-        .then((userData) => {
-          setCurrentUser(userData);
-        })
-        .catch((err) => {
-          console.log(`Ошибка: ${err}`);
-        });
-    }
-  }, [isLoggedIn]);
 
   function handleCheckToken() {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       auth.checkToken(jwt)
-        .then((res) => {
-          setUserEmail(res.email);
-          setUserName(res.name);
-          setIsLoggedIn(true);
+        .then(() => {
           setToken(jwt);
+          setIsLoggedIn(true);
+          localStorage.setItem("isLoggedIn", true);
+          mainApi.getUserInfo(jwt)
+            .then((userData) => {
+              setCurrentUser(userData);
+            })
+            .catch((err) => {
+              console.log(`Ошибка: ${err}`);
+            });
         })
         .catch((err) => {
           console.log(`Ошибка: ${err}`);
+          handleSignOut();
         });
     } else {
       handleSignOut();
@@ -66,10 +61,8 @@ function App() {
 
   function handleRegister(data) {
     auth.register(data)
-      .then((res) => {
-        setUserEmail(res.email);
-        setUserName(res.name);
-        navigate("/movies");
+      .then(() => {
+        handleLogin(data);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
@@ -78,17 +71,27 @@ function App() {
       });
   }
 
-  function handleLogin(data) {
-    auth.login({email: data.email, password: data.password})
+  async function handleLogin(data) {
+    await auth.login({email: data.email, password: data.password})
       .then((res) => {
         localStorage.setItem("jwt", res.token);
-        handleCheckToken();
         setToken(res.token);
+        setIsLoggedIn(true);
+        localStorage.setItem("isLoggedIn", true);
         navigate("/movies");
+
         mainApi.getMovies(res.token)
           .then((data) => {
             localStorage.setItem("savedMovies", JSON.stringify(data));
           }).catch((err) => {
+            console.log(`Ошибка: ${err}`);
+          });
+
+        mainApi.getUserInfo(res.token)
+          .then((userData) => {
+            setCurrentUser(userData);
+          })
+          .catch((err) => {
             console.log(`Ошибка: ${err}`);
           });
       })
@@ -101,32 +104,32 @@ function App() {
 
   function handleSignOut() {
     setIsLoggedIn(false);
+    localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("jwt");
     localStorage.removeItem("checkboxState");
     localStorage.removeItem("foundMovies");
     localStorage.removeItem("counter");
+    localStorage.removeItem("counterOnSaved");
     localStorage.removeItem("movies");
     localStorage.removeItem("savedMovies");
     localStorage.removeItem("foundSavedMovies");
     localStorage.removeItem("searchInputValue");
-    setUserEmail("");
-    setUserName("");
+    setCurrentUser({});
     setToken('');
     navigate("/");
   }
 
-  function handleUpdateUser(userData) {
-    mainApi.editUserInfo({name: userData.name, email: userData.email}, token)
-      .then((newUserData) => {
-        setCurrentUser(newUserData);
-        setUserEmail(newUserData.email);
-        setUserName(newUserData.name);
+  function handleUpdateUser() {
+    mainApi.getUserInfo(token)
+      .then((userData) => {
+        setCurrentUser(userData);
         setIsOpenPopup(true);
         setTextPopup("Данные изменены");
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
+    
   }
 
   function closePopup() {
@@ -162,22 +165,29 @@ function App() {
             component={Profile} 
             signOut={handleSignOut}
             updateUser={handleUpdateUser}
-            userEmail={userEmail}
-            userName={userName}
             isLoggedIn={isLoggedIn}
+            token={token}
           />}
           />
   
           <Route path="/signup" 
-            element={<Register 
-              onSubmit={handleRegister}
-            />}
+            element={
+              !isLoggedIn ? 
+                <Register 
+                  onSubmit={handleRegister}
+                /> : 
+                <Navigate to='/movies' />
+            }
           />
           
           <Route path="/signin" 
-            element={<Login 
-              onSubmit={handleLogin}
-            />}
+            element={
+              !isLoggedIn ? 
+                <Login 
+                  onSubmit={handleLogin}
+                /> : 
+                <Navigate to='/movies' />
+            }
           />
   
           <Route path="*" element={<NotFoundPage />}/>

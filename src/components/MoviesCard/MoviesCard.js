@@ -2,21 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './MoviesCard.css';
 import { apiSettings } from "../../utils/constans";
 import mainApi from '../../utils/MainApi';
-//import {CurrentUserContext} from '../../contexts/CurrentUserContext';
 
-function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
+function MoviesCard({ onSavedMovies, movie, token }) {
   const [isSavedMovie, setIsSavedMovie] = useState('');
  
-  let savedMovies = [];
+  let savedMovies = JSON.parse(localStorage.getItem("savedMovies"));
   let imgUrl = onSavedMovies ? (movie.image) : (apiSettings.moviesUrl + movie.image.url);
-
+  
   useEffect(() => {
-    savedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
     let mov = savedMovies.find(item => item.nameRU == movie.nameRU);
     mov ? setIsSavedMovie("is-saved") : setIsSavedMovie("")
   }, []);
-
-
 
   async function handleClick(e) {
     e.preventDefault();
@@ -35,9 +31,8 @@ function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
       nameEN: movie.nameEN,
     };
     
-    savedMovies = (JSON.parse(localStorage.getItem("savedMovies")));
+    let mov = savedMovies.find(item => item.nameRU == movie.nameRU);
     try {
-      let mov = savedMovies.find(item => item.nameRU == movie.nameRU);
       mov ? (   
         await  mainApi.deleteMovie(mov._id, token)
           .then(() => {
@@ -53,16 +48,19 @@ function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
             console.log(`Ошибка: ${err}`);
           })
       )
+      
     } catch(err) {
       console.log(`Ошибка: ${err}`);
     } finally {
-      mainApi.getMovies(token)
+      await mainApi.getMovies(token)
         .then((data) => {
           localStorage.setItem("savedMovies", JSON.stringify(data));
-          onSavedMovies ? (deleteMovie()) : (null);
-        }).catch((err) => {
+        })
+        .catch((err) => {
           console.log(`Ошибка: ${err}`);
         });
+      
+      onSavedMovies ? setIsSavedMovie("") : (null);
     } 
   }
 
@@ -70,6 +68,7 @@ function MoviesCard({ onSavedMovies, movie, token, deleteMovie }) {
   const btnStyle = (onSavedMovies ? "saved-movies" : isSavedMovie);
 
   return (
+    (!onSavedMovies || (isSavedMovie == "is-saved")) &&
     <li className="movie">
       <a className="movie__image-container" href={movie.trailerLink} target="_blank">
         <img 

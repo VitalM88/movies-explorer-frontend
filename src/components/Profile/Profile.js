@@ -1,22 +1,31 @@
 import './Profile.css';
+import { useEffect, useState, useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import Header from '../Header/Header';
-import { useEffect, useState } from 'react';
+import mainApi from "../../utils/MainApi";
 
 import validator from 'validator';
 
 function Profile({
   signOut,
   updateUser,
-  userEmail,
-  userName,
-  isLoggedIn
+  isLoggedIn,
+  token
 }) {
 
-  const [values, setValues] = useState({name: userName, email: userEmail});
+  const currentUser = useContext(CurrentUserContext);
+  const [values, setValues] = useState({name: currentUser.name, email: currentUser.email});
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
   const [isActiveBtn, setIsActiveBtn] = useState(false);
 
+  useEffect(
+    () => {
+      setValues({name: currentUser.name, email: currentUser.email});
+    },
+    [currentUser],
+  );
+  
   const handleChange = (event) => {
     const target = event.target;
     const name = target.name;
@@ -36,16 +45,24 @@ function Profile({
   };
 
   useEffect(() => {
-    if ((userEmail != values.email) || (userName != values.name)) {
+    if ((currentUser.email != values.email) || (currentUser.name != values.name)) {
       isValid ? setIsActiveBtn(true) : setIsActiveBtn(false)
     } else {
       setIsActiveBtn(false);
     }
-  }, [values]);
+  }, [values, currentUser]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    updateUser({name: values.name, email: values.email});
+    
+    mainApi.editUserInfo({name: values.name, email: values.email}, token)
+      .then(() => {
+        //setValues({name: values.name, email: values.email});
+        updateUser();
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }
 
   return (
@@ -54,7 +71,7 @@ function Profile({
         state="header_nav" 
         isLoggedIn={isLoggedIn}
       />
-      <h2 className="profile__title">{`Привет, ${userName}!`}</h2>
+      <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
       <form 
         className="profile__form"
         onSubmit={handleSubmit}

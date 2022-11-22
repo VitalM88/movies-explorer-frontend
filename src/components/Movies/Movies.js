@@ -22,7 +22,8 @@ function Movies({ token, isLoggedIn }) {
   const [isError , setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [checkboxState , setCheckboxState] = useState(JSON.parse(localStorage.getItem("checkboxState")) || false);
-  
+  //const [searchInputValue, setSearchInputValue] = useState(JSON.parse(localStorage.getItem("searchInputValue")) || "");
+
   let counter = (JSON.parse(localStorage.getItem("counter")) || 1);
   let foundMovies = (JSON.parse(localStorage.getItem("foundMovies")) || []);
   let movies = (JSON.parse(localStorage.getItem("movies")) || []);
@@ -42,6 +43,8 @@ function Movies({ token, isLoggedIn }) {
   }, []);
 
   async function getSearchMovies(searchInputValue) {
+    localStorage.setItem("searchInputValue", JSON.stringify(searchInputValue));
+    //setSearchInputValue(newSearchInputValue);
     movies = (JSON.parse(localStorage.getItem("movies")));
     foundMovies = [];
     localStorage.setItem("foundMovies", JSON.stringify([]));
@@ -108,7 +111,6 @@ function Movies({ token, isLoggedIn }) {
       (filteredMovies.length === foundMovies.length) ? setMoreButtonHidden(true) : setMoreButtonHidden(false)
     );
     (filteredMovies.length === 0) ? setNotFound(true) : setNotFound(false);
-    console.log(checkboxState, newCheckboxState);
     setCheckboxState(newCheckboxState);
     setMoviesForRender(filteredMovies);
   }
