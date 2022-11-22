@@ -58,8 +58,6 @@ function App() {
           setTextPopup(`${err}`);
           handleSignOut();
         });
-    } else {
-      handleSignOut();
     }
   }
 
