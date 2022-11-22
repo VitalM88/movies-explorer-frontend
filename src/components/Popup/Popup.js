@@ -1,6 +1,6 @@
-import './EditProfileSuccesPopup.css';
+import './Popup.css';
 
-function EditProfileSuccesPopup({
+function Popup({
   isOpen,
   onClose,
   textPopup,
@@ -17,4 +17,4 @@ function EditProfileSuccesPopup({
 
 }
 
-export default EditProfileSuccesPopup;
+export default Popup;

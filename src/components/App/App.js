@@ -9,7 +9,7 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import NotFoundPage from '../NotFoundPage/NotFoundPage';
-import EditProfileSuccesPopup from '../EditProfileSuccesPopup/EditProfileSuccesPopup'
+import Popup from '../Popup/Popup';
 
 import mainApi from "../../utils/MainApi";
 import auth from "../../utils/auth";
@@ -48,10 +48,14 @@ function App() {
             })
             .catch((err) => {
               console.log(`Ошибка: ${err}`);
+              setIsOpenPopup(true);
+              setTextPopup(`${err}`);
             });
         })
         .catch((err) => {
           console.log(`Ошибка: ${err}`);
+          setIsOpenPopup(true);
+          setTextPopup(`${err}`);
           handleSignOut();
         });
     } else {
@@ -85,6 +89,7 @@ function App() {
             localStorage.setItem("savedMovies", JSON.stringify(data));
           }).catch((err) => {
             console.log(`Ошибка: ${err}`);
+            
           });
 
         mainApi.getUserInfo(res.token)
@@ -128,6 +133,8 @@ function App() {
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
+        setIsOpenPopup(true);
+        setTextPopup(`${err}`);
       });
     
   }
@@ -194,7 +201,7 @@ function App() {
   
         </Routes>
 
-        <EditProfileSuccesPopup
+        <Popup
           isOpen={isOpenPopup}
           onClose={closePopup}
           textPopup={textPopup}

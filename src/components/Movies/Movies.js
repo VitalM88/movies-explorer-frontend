@@ -89,6 +89,7 @@ function Movies({ token, isLoggedIn }) {
 
   function getQuantityMovies () {
     let quantityMovies;
+    counter = (JSON.parse(localStorage.getItem("counter")) || 1);
     (window.innerWidth > 800) ? (
       quantityMovies = quantityMoviesL*counter
     ) : (

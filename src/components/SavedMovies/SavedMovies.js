@@ -80,6 +80,7 @@ function SavedMovies({ token, isLoggedIn }) {
   }
 
   function getQuantityMovies () {
+    counterOnSaved = (JSON.parse(localStorage.getItem("counterOnSaved")) || 1);
     let quantityMovies;
     (window.innerWidth > 800) ? (
       quantityMovies = quantityMoviesL*counterOnSaved
