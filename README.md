@@ -15,19 +15,19 @@
 
 ## Используемые технологии
 :white_check_mark: HTML5;  
-:white_check_mark: CSS3:
+1. :white_check_mark: CSS3:
     - Flexbox;
     - Grid Layout;
     - Positioning;
     - Adaptive UI;
     - Media Queries;
-:white_check_mark: Методология БЭМ;    
-:white_check_mark: JavaScript:
+2. :white_check_mark: Методология БЭМ;    
+3. :white_check_mark: JavaScript:
     - Стиль CamelCase;
     - Промисы (Promise);
     - Асинхронность и оптимизация;
     - Rest API;    
-:white_check_mark: React JS:
+4. :white_check_mark: React JS:
     - Create React App;
     - Портирование разметки в JSX;
     - Функциональные компоненты;
