@@ -10,24 +10,24 @@
 :two: Авторизация зарегистрированного пользователя.    
 :three: Профиль включает разделы: "имя", "email". Разделы профиля можно редактировать.    
 :four: Поиск фильмов по ключевым словам.    
-:five: Поиск фильмов по длительности.
+:five: Поиск фильмов по длительности.    
 :six: Сохранение фильмов.
 
 ## Используемые технологии
-:white_check_mark: HTML5;  
-1. :white_check_mark: CSS3:
+1. :white_check_mark: HTML5;  
+2. :white_check_mark: CSS3:
     - Flexbox;
     - Grid Layout;
     - Positioning;
     - Adaptive UI;
     - Media Queries;
-2. :white_check_mark: Методология БЭМ;    
-3. :white_check_mark: JavaScript:
+3. :white_check_mark: Методология БЭМ;    
+4. :white_check_mark: JavaScript:
     - Стиль CamelCase;
     - Промисы (Promise);
     - Асинхронность и оптимизация;
     - Rest API;    
-4. :white_check_mark: React JS:
+5. :white_check_mark: React JS:
     - Create React App;
     - Портирование разметки в JSX;
     - Функциональные компоненты;
