@@ -1,20 +1,36 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ onSavedMovies }) {
-
-  const movies = [];
-
-  for (let i=0; i<16; i++) {
-    movies.push(MoviesCard({onSavedMovies}));
-  }
+function MoviesCardList({ 
+  moviesForRender, 
+  onSavedMovies, 
+  getMoreMovies, 
+  moreButtonHidden, 
+  token,
+}) {
 
   return (
     <>
-      <li className="cards">
-        {movies}
-      </li>
-      <button type="button" className="cards__button">Еще</button>
+      <ul className="cards">
+       
+        {moviesForRender.map((movie) => {
+          return (
+            <MoviesCard 
+              key={movie.id || movie.movieId}
+              onSavedMovies={onSavedMovies}
+              movie={movie}
+              token={token}
+            />
+          )
+        })}
+      </ul>
+      {!moreButtonHidden &&
+        <button 
+          type="button" 
+          className="cards__button"
+          onClick={getMoreMovies}  
+        >Еще</button>
+      }
     </>
   );
 }

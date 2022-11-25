@@ -3,13 +3,13 @@ import './Navigation.css';
 import { Link } from 'react-router-dom';
 import profileIcon from '../../images/profile-icon.svg';
 
-function Navigation({ state }) {
+function Navigation({ isLoggedIn }) {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [btnState, toogleBtnState] = useState('false');
+  const [btnState, setBtnState] = useState('false');
 
   const handleClick = () => {
-    toogleBtnState(s => !s);
+    setBtnState(s => !s);
   };
 
   const navBarState = (btnState ? "noactive" : "active");
@@ -26,7 +26,7 @@ function Navigation({ state }) {
   return (
     <>
       {
-        state === "header_main" ? (
+        !isLoggedIn ? (
           <div className="navigation navigation_main">
             <Link to="/signup" className="navigation__link">Регистрация</Link>
             <Link to="/signin" className="navigation__link">
@@ -36,7 +36,7 @@ function Navigation({ state }) {
         ) : ''
       }
       {
-        state === "header_nav" ? (
+        isLoggedIn ? (
           (windowWidth > 800) ? (
             <div className="navigation navigation_nav">
               <Link to="/movies" className="navigation__link">Фильмы</Link>

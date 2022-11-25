@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import Form from '../Form/Form';
 
-function Register() {
+function Register({onSubmit}) {
   return (
     <section className="register">
       <Link to="/" >
@@ -14,6 +14,7 @@ function Register() {
       <Form 
         buttonSubmitText = "Зарегестрироваться"
         state = "register"
+        onSubmit={onSubmit}
       />
       
       <p className="login__footer">

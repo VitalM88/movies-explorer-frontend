@@ -9,10 +9,13 @@ import Portfolio from '../Portfolio/Portfolio';
 import Footer from '../Footer/Footer';
 
 
-function Main() {
+function Main({isLoggedIn}) {
   return (
     <div className="main">
-      <Header state="header_main" />
+      <Header 
+        state="header_main" 
+        isLoggedIn={isLoggedIn}
+      />
       <Promo />
       <NavTab />
       <AboutProject />
